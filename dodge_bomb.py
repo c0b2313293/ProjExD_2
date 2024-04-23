@@ -2,6 +2,7 @@ import os
 import random
 import sys
 import pygame as pg
+import time
 
 
 WIDTH, HEIGHT = 1100, 600
@@ -13,6 +14,28 @@ key = {
     pg.K_LEFT: (-5, 0),
     pg.K_RIGHT: (+5, 0)
 }
+
+def game_over(screen):
+    blackout = pg.Surface((WIDTH, HEIGHT))
+    pg.draw.rect(blackout, (0, 0, 0), pg.Rect(0, 0, WIDTH, HEIGHT))
+    blackout.set_alpha(128)
+    screen.blit(blackout, [0, 0])
+    pg.display.update()
+
+    img2 = pg.image.load("fig/8.png")
+    screen.blit(img2, [WIDTH/2-180, HEIGHT/2-40])
+    pg.display.update()
+    screen.blit(img2, [WIDTH/2+135, HEIGHT/2-40])
+    pg.display.update()
+
+    fonto = pg.font.SysFont(None, 64)
+    txt = fonto.render("Game Over",
+            True, (255, 255, 255))
+    txt_rect = txt.get_rect(center=(WIDTH/2, HEIGHT/2))
+    screen.blit(txt, txt_rect)
+    pg.display.update()
+    time.sleep(5)
+
 
 def check_bound(obj_rct:pg.Rect) -> tuple[bool, bool]:
     yoko, tate = True, True
@@ -44,6 +67,7 @@ def main():
                 return
         if kk_rct.colliderect(bd_rct):
             print("Game Over")
+            game_over(screen)
             return
         screen.blit(bg_img, [0, 0]) 
 
@@ -55,12 +79,6 @@ def main():
                 sum_mv[0] += v[0]
                 sum_mv[1] += v[1]
 
-        #if key_lst[pg.K_UP]:
-            #sum_mv[1] -= 5
-        #if key_lst[pg.K_DOWN]:
-            #sum_mv[0] -= 5
-        #if key_lst[pg.K_RIGHT]:
-            #sum_mv[0] += 5
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
