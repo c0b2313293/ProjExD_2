@@ -15,7 +15,7 @@ key = {
     pg.K_RIGHT: (+5, 0)
 }
 
-def game_over(screen):
+def game_over(screen): #ゲームオーバー画面の表示
     blackout = pg.Surface((WIDTH, HEIGHT))
     pg.draw.rect(blackout, (0, 0, 0), pg.Rect(0, 0, WIDTH, HEIGHT))
     blackout.set_alpha(128)
